@@ -11,7 +11,7 @@
   <body class="boleto-page">
     <header class="boleto-header">
       <div class="boleto-heading">
-        <a class="boleto-brand" href="/">BixenteAI 2026</a>
+        <a class="boleto-brand">BixenteAI 2026</a>
         <h1 id="boletoTitle">Cargando jornada…</h1>
         <p id="boletoClosing" class="boleto-closing" hidden></p>
         <p id="boletoLegend" class="boleto-legend" hidden>
@@ -20,7 +20,7 @@
         </p>
       </div>
       <nav class="boleto-actions print-hidden" aria-label="Acciones del boleto">
-        <a class="boleto-back-link" href="/">← Volver al pronóstico</a>
+        <a class="boleto-back-link" aria-hidden="true">← Volver al pronóstico</a>
         <button id="boletoPrintButton" class="button button-primary" type="button">Imprimir</button>
       </nav>
     </header>
@@ -40,8 +40,8 @@
     </main>
 
         <script>
-      window.__JORNADA_DATA__ = {"prediccion_json":{"jornada":6,"fecha_sorteo":"2026-09-13","cierre_apuestas":"2026-09-11 21:00:00","partidos":[{"posicion":1,"local":"Athletic Club (m)","visitante":"Elche (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":2,"local":"Levante (m)","visitante":"Barcelona (m)","signos_recomendados":["2"],"es_doble":false},{"posicion":3,"local":"Osasuna (m)","visitante":"Espanyol (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":4,"local":"Racing De Santander (m)","visitante":"Alavés (m)","signos_recomendados":["1","2"],"es_doble":true},{"posicion":5,"local":"Real Madrid (m)","visitante":"Rayo Vallecano (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":6,"local":"Sevilla (m)","visitante":"Valencia (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":7,"local":"Villarreal (m)","visitante":"Betis (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":8,"local":"Cádiz (m)","visitante":"Las Palmas (m)","signos_recomendados":["2","X"],"es_doble":true},{"posicion":9,"local":"Tenerife (m)","visitante":"Leganés (m)","signos_recomendados":["1","X"],"es_doble":true},{"posicion":10,"local":"R. Valladolid (m)","visitante":"R. Oviedo (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":11,"local":"Alavés (f)","visitante":"Granada (f)","signos_recomendados":["1"],"es_doble":false},{"posicion":12,"local":"Logroño (f)","visitante":"Valencia (f)","signos_recomendados":["1"],"es_doble":false},{"posicion":13,"local":"Eibar (f)","visitante":"Badalona W. (f)","signos_recomendados":["1"],"es_doble":false},{"posicion":14,"local":"Madrid Cff (f)","visitante":"Sevilla (f)","signos_recomendados":["1"],"es_doble":false},{"posicion":15,"local":"Real Sociedad (m)","visitante":"At. Madrid (m)","signos_recomendados":["2"],"es_doble":false}],"pleno_al_15":{"disponible":true,"marcador":"1-1","nota":"marcador más probable de la matriz Poisson/Dixon-Coles"}}};
-      window.__MI_APUESTA__ = null;
+      window.__JORNADA_DATA__ = {"prediccion_json":{"jornada":6,"fecha_sorteo":"2026-09-13","cierre_apuestas":"2026-09-11 21:00:00","partidos":[{"posicion":1,"local":"Athletic Club (m)","visitante":"Elche (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":2,"local":"Levante (m)","visitante":"Barcelona (m)","signos_recomendados":["2"],"es_doble":false},{"posicion":3,"local":"Osasuna (m)","visitante":"Espanyol (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":4,"local":"Racing De Santander (m)","visitante":"Alavés (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":5,"local":"Real Madrid (m)","visitante":"Rayo Vallecano (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":6,"local":"Sevilla (m)","visitante":"Valencia (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":7,"local":"Villarreal (m)","visitante":"Betis (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":8,"local":"Cádiz (m)","visitante":"Las Palmas (m)","signos_recomendados":["2"],"es_doble":false},{"posicion":9,"local":"Tenerife (m)","visitante":"Leganés (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":10,"local":"R. Valladolid (m)","visitante":"R. Oviedo (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":11,"local":"Alavés (f)","visitante":"Granada (f)","signos_recomendados":["1"],"es_doble":false},{"posicion":12,"local":"Logroño (f)","visitante":"Valencia (f)","signos_recomendados":["1"],"es_doble":false},{"posicion":13,"local":"Eibar (f)","visitante":"Badalona W. (f)","signos_recomendados":["1"],"es_doble":false},{"posicion":14,"local":"Madrid Cff (f)","visitante":"Sevilla (f)","signos_recomendados":["1"],"es_doble":false},{"posicion":15,"local":"Real Sociedad (m)","visitante":"At. Madrid (m)","signos_recomendados":["2"],"es_doble":false}],"pleno_al_15":{"disponible":true,"marcador":"1-1","nota":"marcador más probable de la matriz Poisson/Dixon-Coles"}}};
+      window.__MI_APUESTA__ = {"partidos":[{"posicion":1,"signos":["1"]},{"posicion":2,"signos":["2"]},{"posicion":3,"signos":["1"]},{"posicion":4,"signos":["1","2"]},{"posicion":5,"signos":["1"]},{"posicion":6,"signos":["1"]},{"posicion":7,"signos":["1"]},{"posicion":8,"signos":["X","2"]},{"posicion":9,"signos":["1","X"]},{"posicion":10,"signos":["1"]},{"posicion":11,"signos":["1"]},{"posicion":12,"signos":["1"]},{"posicion":13,"signos":["1"]},{"posicion":14,"signos":["1"]}],"pleno15_marcador":"2-1"};
     </script>
     <script src="./boleto-movil.js" defer></script>
   </body>
