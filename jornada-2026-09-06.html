@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Boleto compacto de La Quiniela para llevar o imprimir">
+    <title>Boleto para llevar · BixenteAI 2026</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body class="boleto-page">
+    <header class="boleto-header">
+      <div class="boleto-heading">
+        <a class="boleto-brand">BixenteAI 2026</a>
+        <h1 id="boletoTitle">Cargando jornada…</h1>
+        <p id="boletoClosing" class="boleto-closing" hidden></p>
+        <p id="boletoLegend" class="boleto-legend" hidden>
+          <span class="boleto-legend-item boleto-legend-model">Pronóstico</span>
+          <span class="boleto-legend-item boleto-legend-mine">Mi apuesta</span>
+        </p>
+      </div>
+      <nav class="boleto-actions print-hidden" aria-label="Acciones del boleto">
+        <a class="boleto-back-link" aria-hidden="true">← Volver al pronóstico</a>
+        <button id="boletoPrintButton" class="button button-primary" type="button">Imprimir</button>
+      </nav>
+    </header>
+
+    <main class="boleto-sheet">
+      <nav class="boleto-actions header-actions print-hidden" aria-label="Navegación entre jornadas">
+        <a class="button button-secondary" href="./jornada-2026-08-30.html">‹ Jornada 3</a>
+        <a class="button button-secondary" href="./jornadas.html">Todas las jornadas</a>
+        <a class="button button-secondary" href="./historico.html">Histórico</a>
+        <a class="button button-secondary" href="./jornada-2026-09-09.html">Jornada 5 ›</a>
+      </nav>
+      <div
+        id="boletoStatus"
+        class="boleto-status"
+        role="status"
+        aria-live="polite"
+      >
+        Cargando el boleto guardado…
+      </div>
+      <section id="boletoContent" aria-labelledby="boletoTitle" hidden>
+        <div id="boletoMatches" class="matches-list boleto-matches" aria-busy="true"></div>
+      </section>
+    </main>
+
+        <script>
+      window.__JORNADA_DATA__ = {"prediccion_json":{"jornada":4,"fecha_sorteo":"2026-09-06","cierre_apuestas":"2026-09-05 14:00:00","partidos":[{"posicion":1,"local":"Athletic Club (m)","visitante":"At. Madrid (m)","signos_recomendados":["2","1"],"es_doble":true,"marcador_real":"3 - 0","signo_real":"1","acertado":true},{"posicion":2,"local":"Rayo Vallecano (m)","visitante":"Racing Santander (m)","signos_recomendados":["1"],"es_doble":false,"marcador_real":"3 - 2","signo_real":"1","acertado":true},{"posicion":3,"local":"Villarreal (m)","visitante":"Deportivo (m)","signos_recomendados":["1"],"es_doble":false,"marcador_real":"2 - 3","signo_real":"2","acertado":false},{"posicion":4,"local":"Valencia (m)","visitante":"Barcelona (m)","signos_recomendados":["2"],"es_doble":false,"marcador_real":"0 - 5","signo_real":"2","acertado":true},{"posicion":5,"local":"Alavés (m)","visitante":"Osasuna (m)","signos_recomendados":["1"],"es_doble":false,"marcador_real":"5 - 2","signo_real":"1","acertado":true},{"posicion":6,"local":"Málaga (m)","visitante":"Levante (m)","signos_recomendados":["1","2"],"es_doble":true,"marcador_real":"0 - 0","signo_real":"X","acertado":false},{"posicion":7,"local":"Espanyol (m)","visitante":"Sevilla (m)","signos_recomendados":["1"],"es_doble":false,"marcador_real":"1 - 1","signo_real":"X","acertado":false},{"posicion":8,"local":"Real Sociedad B (m)","visitante":"Tenerife (m)","signos_recomendados":["1","2"],"es_doble":true,"marcador_real":"1 - 1","signo_real":"X","acertado":false},{"posicion":9,"local":"Sporting (m)","visitante":"Girona (m)","signos_recomendados":["1"],"es_doble":false,"marcador_real":"0 - 2","signo_real":"2","acertado":false},{"posicion":10,"local":"Almería (m)","visitante":"Cádiz (m)","signos_recomendados":["1"],"es_doble":false,"marcador_real":"3 - 2","signo_real":"1","acertado":true},{"posicion":11,"local":"Sevilla (f)","visitante":"Barcelona (f)","signos_recomendados":["2"],"es_doble":false,"marcador_real":"0 - 4","signo_real":"2","acertado":true},{"posicion":12,"local":"Logroño (f)","visitante":"Athletic Club (f)","signos_recomendados":["2"],"es_doble":false,"marcador_real":"0 - 1","signo_real":"2","acertado":true},{"posicion":13,"local":"At. Madrid (f)","visitante":"Alavés (f)","signos_recomendados":["1"],"es_doble":false,"marcador_real":"1 - 0","signo_real":"1","acertado":true},{"posicion":14,"local":"Real Madrid (f)","visitante":"Eibar (f)","signos_recomendados":["1"],"es_doble":false,"marcador_real":"0 - 0","signo_real":"X","acertado":false},{"posicion":15,"local":"Getafe (m)","visitante":"Celta (m)","signos_recomendados":["2"],"es_doble":false,"marcador_real":"1 - 1","signo_real":"X","acertado":false}],"pleno_al_15":{"disponible":true,"marcador":"0-1","nota":"marcador más probable de la matriz Poisson/Dixon-Coles"},"reconciliado_en":"2026-09-08T06:59:20+02:00","resumen_aciertos":{"aciertos":8,"total":14,"porcentaje_aciertos":57.142857142857146,"pleno_al_15":{"prediccion":"0-1","resultado":"1-1","acertado":false}}}};
+      window.__MI_APUESTA__ = {"partidos":[{"posicion":1,"signos":["1","X"]},{"posicion":2,"signos":["1"]},{"posicion":3,"signos":["1"]},{"posicion":4,"signos":["2"]},{"posicion":5,"signos":["1"]},{"posicion":6,"signos":["1","X"]},{"posicion":7,"signos":["1","X"]},{"posicion":8,"signos":["1"]},{"posicion":9,"signos":["1"]},{"posicion":10,"signos":["1"]},{"posicion":11,"signos":["2"]},{"posicion":12,"signos":["2"]},{"posicion":13,"signos":["1"]},{"posicion":14,"signos":["1"]}],"pleno15_marcador":"0-1"};
+    </script>
+    <script src="./boleto-movil.js" defer></script>
+  </body>
+</html>

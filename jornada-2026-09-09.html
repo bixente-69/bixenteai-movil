@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Boleto compacto de La Quiniela para llevar o imprimir">
+    <title>Boleto para llevar · BixenteAI 2026</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body class="boleto-page">
+    <header class="boleto-header">
+      <div class="boleto-heading">
+        <a class="boleto-brand">BixenteAI 2026</a>
+        <h1 id="boletoTitle">Cargando jornada…</h1>
+        <p id="boletoClosing" class="boleto-closing" hidden></p>
+        <p id="boletoLegend" class="boleto-legend" hidden>
+          <span class="boleto-legend-item boleto-legend-model">Pronóstico</span>
+          <span class="boleto-legend-item boleto-legend-mine">Mi apuesta</span>
+        </p>
+      </div>
+      <nav class="boleto-actions print-hidden" aria-label="Acciones del boleto">
+        <a class="boleto-back-link" aria-hidden="true">← Volver al pronóstico</a>
+        <button id="boletoPrintButton" class="button button-primary" type="button">Imprimir</button>
+      </nav>
+    </header>
+
+    <main class="boleto-sheet">
+      <nav class="boleto-actions header-actions print-hidden" aria-label="Navegación entre jornadas">
+        <a class="button button-secondary" href="./jornada-2026-09-06.html">‹ Jornada 4</a>
+        <a class="button button-secondary" href="./jornadas.html">Todas las jornadas</a>
+        <a class="button button-secondary" href="./historico.html">Histórico</a>
+        <a class="button button-secondary" href="./jornada-2026-09-13.html">Jornada 6 ›</a>
+      </nav>
+      <div
+        id="boletoStatus"
+        class="boleto-status"
+        role="status"
+        aria-live="polite"
+      >
+        Cargando el boleto guardado…
+      </div>
+      <section id="boletoContent" aria-labelledby="boletoTitle" hidden>
+        <div id="boletoMatches" class="matches-list boleto-matches" aria-busy="true"></div>
+      </section>
+    </main>
+
+        <script>
+      window.__JORNADA_DATA__ = {"prediccion_json":{"jornada":5,"fecha_sorteo":"2026-09-09","cierre_apuestas":"2026-09-08 21:00:00","partidos":[{"posicion":1,"local":"Borussia Dortmund (m)","visitante":"Villarreal (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":2,"local":"Oporto (m)","visitante":"Manchester City (m)","signos_recomendados":["2"],"es_doble":false},{"posicion":3,"local":"Losc Lille (m)","visitante":"Betis (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":4,"local":"Real Madrid (m)","visitante":"Inter De Milán (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":5,"local":"Barcelona (m)","visitante":"Feyenoord (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":6,"local":"Psg (m)","visitante":"Slovan Bratislava (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":7,"local":"Sporting De Portugal (m)","visitante":"Galatasaray (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":8,"local":"Nápoles (m)","visitante":"Arsenal (m)","signos_recomendados":["2"],"es_doble":false},{"posicion":9,"local":"Fenerbahçe Sk (m)","visitante":"Roma (m)","signos_recomendados":["2"],"es_doble":false},{"posicion":10,"local":"Psv (m)","visitante":"Shakhtar Donetsk (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":11,"local":"Como 1907 (m)","visitante":"Rb. Leipzig (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":12,"local":"Bayern De Múnich (m)","visitante":"Bodo Glimt (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":13,"local":"Manchester United (m)","visitante":"Sabah (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":14,"local":"Sk Slavia De Praga (m)","visitante":"Rc Lens (m)","signos_recomendados":["1"],"es_doble":false},{"posicion":15,"local":"Liverpool (m)","visitante":"At. Madrid (m)","signos_recomendados":["1"],"es_doble":false}],"pleno_al_15":{"disponible":false,"marcador":null,"nota":"no disponible, sin modelo propio para este partido"}}};
+      window.__MI_APUESTA__ = {"partidos":[{"posicion":1,"signos":["1"]},{"posicion":2,"signos":["2"]},{"posicion":3,"signos":["1","X"]},{"posicion":4,"signos":["1"]},{"posicion":5,"signos":["1"]},{"posicion":6,"signos":["1"]},{"posicion":7,"signos":["1"]},{"posicion":8,"signos":["2"]},{"posicion":9,"signos":["1","X"]},{"posicion":10,"signos":["1"]},{"posicion":11,"signos":["1"]},{"posicion":12,"signos":["1"]},{"posicion":13,"signos":["1"]},{"posicion":14,"signos":["1","X"]}],"pleno15_marcador":"2-2"};
+    </script>
+    <script src="./boleto-movil.js" defer></script>
+  </body>
+</html>
