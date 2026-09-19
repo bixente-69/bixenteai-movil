@@ -3,6 +3,12 @@
 const SIGNS = ["1", "X", "2"];
 // SELAE solo ofrece 4 casillas reales en el Pleno al 15: 0, 1, 2 o M (3 o más goles).
 const GOAL_SIGNS = ["0", "1", "2", "M"];
+const LIVE_SCORE_LEAGUES = ["esp.1", "esp.2", "esp.w.1", "uefa.champions"];
+const LIVE_SCORE_REFRESH_MS = 60_000;
+
+let liveScoreRefreshTimer = null;
+let liveScoreRefreshInFlight = false;
+let activeLiveScoreDate = null;
 
 const elements = {
   title: document.querySelector("#boletoTitle"),
@@ -23,6 +29,215 @@ function createElement(tag, className, text) {
     element.textContent = text;
   }
   return element;
+}
+
+function formatLiveScoreDate(date = new Date()) {
+  const year = String(date.getFullYear());
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}${month}${day}`;
+}
+
+function normalizeLiveScoreTeamName(value) {
+  return String(value || "")
+    .replace(/\s*\([mf]\)\s*$/i, "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function liveScoreTeamNamesIncludeEachOther(left, right) {
+  return Boolean(left && right && (left.includes(right) || right.includes(left)));
+}
+
+function liveScoreFromCompetitor(competitor) {
+  const score = String(competitor?.score ?? "").trim();
+  return /^\d+$/.test(score) ? Number(score) : null;
+}
+
+function liveScoreTeamName(competitor) {
+  const name = competitor?.team?.displayName;
+  return typeof name === "string" && name.trim() ? name.trim() : null;
+}
+
+function extractLiveScoreMatches(payload, league) {
+  const matches = [];
+  const events = Array.isArray(payload?.events) ? payload.events : [];
+
+  for (const event of events) {
+    const competition = Array.isArray(event?.competitions) ? event.competitions[0] : null;
+    const statusType = competition?.status?.type;
+    const state = statusType?.state;
+    if (state !== "in" && state !== "post") {
+      continue;
+    }
+
+    const competitors = Array.isArray(competition?.competitors)
+      ? competition.competitors
+      : [];
+    const home = competitors.find((competitor) => competitor?.homeAway === "home");
+    const away = competitors.find((competitor) => competitor?.homeAway === "away");
+    const homeName = liveScoreTeamName(home);
+    const awayName = liveScoreTeamName(away);
+    const homeScore = liveScoreFromCompetitor(home);
+    const awayScore = liveScoreFromCompetitor(away);
+    if (!homeName || !awayName || homeScore === null || awayScore === null) {
+      continue;
+    }
+
+    matches.push({
+      homeName,
+      awayName,
+      homeScore,
+      awayScore,
+      state,
+      completed: Boolean(statusType?.completed),
+      league,
+    });
+  }
+  return matches;
+}
+
+async function requestLiveScoreLeague(league, dateKey) {
+  const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${league}/scoreboard?dates=${dateKey}`;
+  const response = await globalThis["fetch"](
+    url,
+    { headers: { Accept: "application/json" } },
+  );
+  if (!response.ok) {
+    throw new Error(`ESPN respondió con código ${response.status}`);
+  }
+  return extractLiveScoreMatches(await response.json(), league);
+}
+
+async function requestLiveScores(dateKey) {
+  const results = await Promise.allSettled(
+    LIVE_SCORE_LEAGUES.map((league) => requestLiveScoreLeague(league, dateKey)),
+  );
+  const matches = [];
+  const successfulLeagues = new Set();
+  results.forEach((result, index) => {
+    if (result.status !== "fulfilled") {
+      return;
+    }
+    successfulLeagues.add(LIVE_SCORE_LEAGUES[index]);
+    matches.push(...result.value);
+  });
+  return { matches, successfulLeagues };
+}
+
+function findLiveScoreMatch(homeName, awayName, scoreboardMatches) {
+  const normalizedHome = normalizeLiveScoreTeamName(homeName);
+  const normalizedAway = normalizeLiveScoreTeamName(awayName);
+  if (!normalizedHome || !normalizedAway) {
+    return null;
+  }
+
+  const normalizedMatches = scoreboardMatches.map((match) => ({
+    match,
+    home: normalizeLiveScoreTeamName(match.homeName),
+    away: normalizeLiveScoreTeamName(match.awayName),
+  }));
+  const exactMatches = normalizedMatches.filter(
+    (candidate) => candidate.home === normalizedHome && candidate.away === normalizedAway,
+  );
+  if (exactMatches.length === 1) {
+    return exactMatches[0].match;
+  }
+
+  const includedMatches = normalizedMatches.filter(
+    (candidate) => liveScoreTeamNamesIncludeEachOther(candidate.home, normalizedHome)
+      && liveScoreTeamNamesIncludeEachOther(candidate.away, normalizedAway),
+  );
+  return includedMatches.length === 1 ? includedMatches[0].match : null;
+}
+
+function createLiveScoreBadge(match) {
+  const badge = createElement("span", "boleto-live-score");
+  badge.hidden = true;
+  badge.dataset.homeTeam = match.local;
+  badge.dataset.awayTeam = match.visitante;
+  badge.setAttribute("aria-live", "polite");
+  return badge;
+}
+
+function clearLiveScoreBadge(badge) {
+  badge.hidden = true;
+  badge.textContent = "";
+  badge.removeAttribute("aria-label");
+  delete badge.dataset.liveLeague;
+}
+
+function clearLiveScoreBadges() {
+  elements.matches.querySelectorAll(".boleto-live-score").forEach(clearLiveScoreBadge);
+}
+
+function renderLiveScoreBadges(scoreboardMatches, successfulLeagues) {
+  const badges = elements.matches.querySelectorAll(".boleto-live-score");
+  for (const badge of badges) {
+    const match = findLiveScoreMatch(
+      badge.dataset.homeTeam,
+      badge.dataset.awayTeam,
+      scoreboardMatches,
+    );
+    if (!match) {
+      if (!badge.dataset.liveLeague || successfulLeagues.has(badge.dataset.liveLeague)) {
+        clearLiveScoreBadge(badge);
+      }
+      continue;
+    }
+
+    const phase = match.state === "in" && !match.completed ? "en juego" : "final";
+    const label = `${match.homeScore}-${match.awayScore} · ${phase}`;
+    badge.textContent = label;
+    badge.dataset.liveLeague = match.league;
+    badge.setAttribute(
+      "aria-label",
+      `Marcador: ${match.homeName} ${match.homeScore}, ${match.awayName} ${match.awayScore}; ${phase}`,
+    );
+    badge.hidden = false;
+  }
+}
+
+async function refreshLiveScores() {
+  if (document.visibilityState !== "visible" || liveScoreRefreshInFlight) {
+    return;
+  }
+  liveScoreRefreshInFlight = true;
+  try {
+    const dateKey = formatLiveScoreDate();
+    if (activeLiveScoreDate !== dateKey) {
+      clearLiveScoreBadges();
+      activeLiveScoreDate = dateKey;
+    }
+    const { matches, successfulLeagues } = await requestLiveScores(dateKey);
+    renderLiveScoreBadges(matches, successfulLeagues);
+  } catch {
+    // Los marcadores son opcionales: cualquier fallo debe dejar intacto el boleto.
+  } finally {
+    liveScoreRefreshInFlight = false;
+  }
+}
+
+function stopLiveScoreRefresh() {
+  if (liveScoreRefreshTimer !== null) {
+    window.clearInterval(liveScoreRefreshTimer);
+    liveScoreRefreshTimer = null;
+  }
+}
+
+function startLiveScoreRefresh() {
+  stopLiveScoreRefresh();
+  if (document.visibilityState !== "visible") {
+    return;
+  }
+  void refreshLiveScores();
+  liveScoreRefreshTimer = window.setInterval(
+    () => void refreshLiveScores(),
+    LIVE_SCORE_REFRESH_MS,
+  );
 }
 
 function parseDateOnly(value) {
@@ -85,6 +300,7 @@ async function readResponse(response) {
 }
 
 function showEmpty(message) {
+  stopLiveScoreRefresh();
   elements.content.hidden = true;
   elements.status.replaceChildren(
     createElement("strong", "", message),
@@ -134,6 +350,7 @@ function renderTeams(match) {
     createElement("span", "boleto-team boleto-team-home", match.local),
     createElement("span", "boleto-team boleto-team-away", match.visitante),
   );
+  teams.append(createLiveScoreBadge(match));
   return teams;
 }
 
@@ -312,6 +529,7 @@ function renderJornada(jornada, manualBet) {
   elements.matches.setAttribute("aria-busy", "false");
   elements.status.remove();
   elements.content.hidden = false;
+  startLiveScoreRefresh();
 }
 
 async function fetchManualBet(drawDate) {
@@ -347,4 +565,11 @@ async function loadBoleto() {
 }
 
 elements.printButton.addEventListener("click", () => window.print());
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    startLiveScoreRefresh();
+  } else {
+    stopLiveScoreRefresh();
+  }
+});
 loadBoleto();

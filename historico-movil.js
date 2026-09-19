@@ -317,9 +317,12 @@ function renderJourneys(payload) {
         return byDate || Number(right.jornada) - Number(left.jornada);
       })
     : [];
-  for (const journey of journeys) {
-    const card = createElement("article", "season-journey-card");
-    const heading = createElement("header", "season-journey-heading");
+  for (const [index, journey] of journeys.entries()) {
+    const card = createElement("details", "season-journey-card");
+    const heading = createElement("summary", "season-journey-heading");
+    if (index === 0) {
+      card.open = true;
+    }
     heading.append(
       createElement("p", "eyebrow", `Jornada ${journey.jornada}`),
       createElement(
